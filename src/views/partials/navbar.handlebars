@@ -1,0 +1,11 @@
+<nav class="nav">
+    <a href="http://localhost:8080" class="nav-item">Inicio</a>
+    <a href="http://localhost:8080/products" class="nav-item">Productos</a>
+    <a href="http://localhost:8080/profile" class="nav-item">Perfil</a>
+        {{#if user}}
+            <a href="/api/sessions/logout" class="nav-item">Cerrar Sesión</a>
+        {{else}}
+            <a href="/login" class="nav-item">Iniciar Sesión</a>
+        {{/if}}
+    </div>
+</nav>
