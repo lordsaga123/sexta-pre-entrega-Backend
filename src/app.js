@@ -4,10 +4,19 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const exphbs = require ("express-handlebars");
 const socket = require("socket.io");
+
+/*const ProductServices = require("./services/productServices.js");
+const CartServices = require('./services/cartServices.js');
+const ProductController = require('./controllers/product.Controller.js');
+const CartController = require('./controllers/cart.Controller.js');*/
+
+
+
+
+
 //Passport: 
 const passport = require("passport");
 const initializePassport = require("./config/passport.config.js");
-
 
 //Creación de Servidor:
 
@@ -15,11 +24,21 @@ const app = express();
 const PUERTO = 8080;
 require("./database.js");
 
+// Nuevas instancias de las Clases
+/*const productServices = new ProductServices()
+const cartServices = new CartServices()
+const productController = new ProductController()
+const cartController = new CartController()*/
+
 const productsRouter = require("./routes/products.router.js");
 const cartsRouter = require("./routes/carts.router.js");
 const viewsRouter = require("./routes/views.router.js");
 const userRouter = require("./routes/user.router.js");
 const sessionRouter = require("./routes/sessions.router.js");
+
+// Variables de entorno
+const configObject = require("./config/config.js")
+const { mongo_url } = configObject
 
 //Middleware
 app.use(express.urlencoded({extended : true}));
@@ -31,10 +50,11 @@ app.use(session({
     resave: true,
     saveUninitialized: true,
     store: MongoStore.create({
-        mongoUrl: "mongodb+srv://luisjaimevaz:Oliver2017@cluster0.qhzsnxj.mongodb.net/e-commerce?retryWrites=true&w=majority&appName=Cluster0",
+        mongoUrl:"mongodb+srv://luisjaimevaz:Oliver2017@cluster0.qhzsnxj.mongodb.net/e-commerce?retryWrites=true&w=majority&appName=Cluster0",
         ttl: 11200
     })
     
+    //"mongodb+srv://luisjaimevaz:Oliver2017@cluster0.qhzsnxj.mongodb.net/e-commerce?retryWrites=true&w=majority&appName=Cluster0"
 
 }))
 //PASSPORT
@@ -52,8 +72,14 @@ app.set("views", "./src/views");
 
 
 //Rutas
+/*app.use("/", require("./routes/views.router.js")(productServices, cartServices));
+app.use("/api/products", require("./routes/products.router.js")(productController));
+app.use("/api/carts/", require("./routes/carts.router.js")(cartController));
+app.use("/api/users", userRouter);
+app.use("/api/sessions", sessionRouter);*/
+
 app.use("/api/products", productsRouter);
-app.use("/api/carts/", cartsRouter);
+app.use("/api/carts", cartsRouter);
 app.use("/", viewsRouter);
 app.use("/api/users", userRouter);
 app.use("/api/sessions", sessionRouter);
@@ -64,6 +90,7 @@ app.use("/api/sessions", sessionRouter);
 const httpServer = app.listen(PUERTO, ()=> {
     console.log(`Escuchando en el Puerto ${PUERTO}`);
 })
+
 
 //Chat del E-Commerce
 const MessageModel = require("./dao/models/message.model.js");

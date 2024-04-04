@@ -1,13 +1,53 @@
 const express = require("express");
 const router = express.Router();
+const CartController = require("../controllers/cart.Controller.js");
+const cartController = new CartController();
+
+// Rutas
+
+// Agregar Carrito
+router.post("/", (req, res) => cartController.crearCarrito(req, res));
+
+// Obtener Carritos
+router.get("/:cartId", (req, res) => cartController.obtenerCarrito(req, res));
+
+// Agregar productos a varios carritos diferentes
+router.post("/:cartId/product/:pid", (req, res) => cartController.agregarProductoAlCarrito(req, res));
+
+// Eliminar un producto específico de un carrito
+router.delete('/:cartId/product/:pid', (req, res) => cartController.eliminarProductoDelCarrito(req, res));
+
+// Actualizar productos del carrito
+router.put('/:cid', (req, res) => cartController.actualizarCarrito(req, res));
+
+// Actualizar las cantidades de productos
+router.put('/:cid/product/:pid', (req, res) => cartController.actualizarCantidadDeProducto(req, res));
+
+// Vaciar carrito
+router.delete('/:cartId', (req, res) => cartController.vaciarCarrito(req, res));
+
+module.exports = router;
+
+
+
+
+
+
+
+/*const express = require("express");
+const router = express.Router();
 
 const CartManager = require("../dao/db/cart-manager-db.js");
 const cartManager = new CartManager();
 const CartModel = require("../dao/models/cart.model.js");
+const ProductManager = require("../dao/db/product-manager-db.js");
+const productManager = new ProductManager();
+const CartController =require ("../controllers/cart.Controller.js");
+const cartController = new CartController();
 
 //Rutas
 //Agregar Carrito
-router.post("/", async (req, res)=>{
+router.post("/", (req, res) => cartController.createCart(req, res));/*async (req, res)=>{
     try {
         const nuevoCarrito = await cartManager.crearCarrito();
         res.json(nuevoCarrito);
@@ -15,11 +55,11 @@ router.post("/", async (req, res)=>{
         console.error("Error al crear un nuevo carrito", error);
         res.status(500).json({error: "Error en el servidor"});
     }
-});
+}*/;
 
 //Obtener Carritos
 
-router.get("/:cid", async (req, res) => {
+/*router.get("/:cid", async (req, res) => {
     const cartId = req.params.cid;
 
     try {
@@ -138,4 +178,4 @@ router.delete('/:cid', async (req, res) => {
     }
 });
 
-module.exports = router;
+module.exports = router;*/

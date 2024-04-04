@@ -1,5 +1,20 @@
 const mongoose = require("mongoose");
+const configObject = require("./config/config.js");
+const { mongo_url } = configObject;
 
-mongoose.connect("mongodb+srv://luisjaimevaz:Oliver2017@cluster0.qhzsnxj.mongodb.net/e-commerce?retryWrites=true&w=majority")
-.then(()=> console.log("Conectado a la Base de Datos E-Commerce"))
-.catch(()=> console.log("Error al conectarse a la base de Datos E-Commerce"))
+mongoose.connect(mongo_url)
+  .then(() => console.log("Conectado a la Base de Datos E-Commerce"))
+  .catch(error => console.error("Error al conectarse a la base de Datos E-Commerce:", error));
+
+
+
+
+
+
+/*const mongoose = require("mongoose");
+const configObject = require("./config/config");
+const {mongo_url} = configObject;
+
+mongoose.connect(mongo_url)
+  .then(() => console.log("Conectado a la Base de Datos E-Commerce"))
+  .catch(error => console.error("Error al conectarse a la base de Datos E-Commerce:", error));*/
